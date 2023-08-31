@@ -155,5 +155,84 @@ namespace EmployeePayroll
                 return false;
             }
         }
+
+        public void ParticularRange(string date)
+        {
+            try
+            {
+                Connection();
+                List<Payroll> list = new List<Payroll>();
+                SqlCommand com = new SqlCommand("Range", con);
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@start_date", date);
+                SqlDataAdapter da = new SqlDataAdapter(com);
+                DataTable dt = new DataTable();
+                con.Open();
+                da.Fill(dt);
+                con.Close();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    list.Add(
+                       new Payroll
+                       {
+                           Id = Convert.ToInt32(dr["id"]),
+                           Name = Convert.ToString(dr["name"]),
+                           Salary = Convert.ToInt32(dr["salary"]),
+                           Start_Date = Convert.ToString(dr["start_date"]),
+                           Gender = Convert.ToChar(dr["gender"]),
+                           Phone = Convert.ToString(dr["phone"]),
+                           Address = Convert.ToString(dr["address"]),
+                           Department = Convert.ToString(dr["department"]),
+                           Basic_pay = Convert.ToInt64(dr["basic_pay"]),
+                           Deductions = Convert.ToInt64(dr["deductions"]),
+                           Taxable_pay = Convert.ToInt64(dr["taxable_pay"]),
+                           Income_tax = Convert.ToInt64(dr["income_tax"]),
+                           Net_pay = Convert.ToInt64(dr["net_pay"]),
+                       }
+                       );
+                }
+                foreach (var data in list)
+                {
+                    Console.WriteLine(data.Name + " " + data.Start_Date);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+        public void Calculations()
+        {
+            try
+            {
+                Connection();
+                SqlCommand com = new SqlCommand("Calculations", con);
+                com.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter da = new SqlDataAdapter(com);
+                DataTable dt = new DataTable();
+                con.Open();
+                da.Fill(dt);
+                con.Close();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Console.WriteLine("Sum = " + Convert.ToString(dr["Sum"]));
+                    Console.WriteLine("Average = " + Convert.ToString(dr["Avg"]));
+                    Console.WriteLine("Min = " + Convert.ToString(dr["Min"]));
+                    Console.WriteLine("Max = " + Convert.ToString(dr["Max"]));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
     }
 }

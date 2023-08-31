@@ -65,6 +65,8 @@ namespace EmployeeManagement
             //};
 
             //operations.UpdateEmployee_payroll(employee1);
+            //operations.ParticularRange("2023-01-01");
+            operations.Calculations();
         }
     }
 }
