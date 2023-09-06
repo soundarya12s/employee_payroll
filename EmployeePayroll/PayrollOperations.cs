@@ -234,5 +234,31 @@ namespace EmployeePayroll
                 con.Close();
             }
         }
+
+        public void UsingWithThread(List<Payroll> list)
+        {
+            DateTime start = DateTime.Now;
+            foreach (var data in list)
+            {
+                Task thread = new Task(() =>
+                {
+                    Console.WriteLine("Being Added:" + data.Name);
+                    AddEmployee_payroll(data);
+                    Console.WriteLine("Added:" + data.Name);
+                });
+            }
+            DateTime end = DateTime.Now;
+            Console.WriteLine("Duration with Thread: " + (end - start));
+        }
+        public void UsingWithoutThread(List<Payroll> list)
+        {
+            DateTime start = DateTime.Now;
+            foreach (var data in list)
+            {
+                AddEmployee_payroll(data);
+            }
+            DateTime end = DateTime.Now;
+            Console.WriteLine("Duration without Thread: " + (end - start));
+        }
     }
 }

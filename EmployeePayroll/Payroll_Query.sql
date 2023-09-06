@@ -120,7 +120,8 @@ Begin
 Select * from employee_payroll
 End
 
- 
+select * from employee_payroll;
+delete from employee_payroll Where name='d';
 
 Create procedure DeleteEmployee_payroll
 (
@@ -156,6 +157,28 @@ department = @department, basic_pay = @basic_pay, deductions = @deductions, taxa
 where Id=@Id
 End
 
- 
+ Create Procedure Range(
+@start_date date
+)
+As
+Begin
+Select * from employee_payroll where start_date between CAST(@start_date as Date) and GETDATE();
+End
+
+Create Procedure Calculations
+As
+Begin
+Select 
+Sum(cast(salary as bigint))as Sum , 
+Avg(cast(salary as bigint))as Avg,
+Min(cast(salary as bigint))as Min,
+Max(cast(salary as bigint))as Max from employee_payroll; 
+End
+Select e.*,d.* from employee e,department d where e.emp_id = d.dep_id and e.emp_id = 1;
+
+UPDATE employee_payroll
+SET gender = 'F', phone = 1092837465, address = 'Chennai', department ='IT', basic_pay = 8000, 
+deductions = 2000, taxable_pay = 500, income_tax = 200, net_pay = 3000
+WHERE name = 'Soundarya';
 
 EXEC GetAllEmployee_payroll;
